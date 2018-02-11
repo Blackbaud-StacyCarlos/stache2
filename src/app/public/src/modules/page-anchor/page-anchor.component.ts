@@ -3,14 +3,13 @@ import {
   Component,
   ElementRef,
   OnInit,
+  Input,
   AfterViewInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import { StacheNavLink } from '../nav';
+import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
 import { StacheWindowRef } from '../shared';
 
 @Component({
@@ -19,26 +18,23 @@ import { StacheWindowRef } from '../shared';
   styleUrls: ['./page-anchor.component.scss']
 })
 export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterViewInit {
+
+  @Input()
   public name: string;
   public fragment: string;
   public path: string[];
-  public navLinkStream: Observable<StacheNavLink>;
-
-  private _subject: BehaviorSubject<StacheNavLink>;
 
   public constructor(
     private router: Router,
     private elementRef: ElementRef,
     private windowRef: StacheWindowRef,
-    private cdRef: ChangeDetectorRef) {
-      this._subject = new BehaviorSubject<StacheNavLink>({ name: '', path: '' });
-      this.navLinkStream = this._subject.asObservable();
-    }
+    private cdRef: ChangeDetectorRef,
+    private contentsService: StacheTableOfContentsService) {}
 
   public ngOnInit(): void {
-    this.name = this.getName();
     this.fragment = this.getFragment();
     this.path = [this.router.url.split('#')[0]];
+    this.registerAnchor();
   }
 
   public addHashToUrl(): void {
@@ -48,14 +44,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   }
 
   public ngAfterViewInit(): void {
-    this.name = this.getName();
-    this.fragment = this.getFragment();
-    this.sendChanges();
     this.cdRef.detectChanges();
-  }
-
-  private getName(): string {
-    return this.elementRef.nativeElement.textContent.trim();
   }
 
   private getFragment(): string {
@@ -65,8 +54,8 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
       .replace(/[^\w-]+/g, '');
   }
 
-  private sendChanges(): void {
-    this._subject.next({
+  private registerAnchor(): void {
+    this.contentsService.addPageAnchor({
       path: this.path,
       name: this.name,
       fragment: this.fragment

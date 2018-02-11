@@ -1,13 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 
 import { StacheNav, StacheNavLink } from '../nav';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'stache-table-of-contents',
   templateUrl: './table-of-contents.component.html',
   styleUrls: ['./table-of-contents.component.scss']
 })
-export class StacheTableOfContentsComponent implements StacheNav {
+export class StacheTableOfContentsComponent implements StacheNav, AfterViewInit {
   @Input()
   public routes: StacheNavLink[];
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  public ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
 }

@@ -8,18 +8,24 @@ import { StachePageAnchorTestComponent } from './fixtures/page-anchor.component.
 import { StachePageAnchorComponent } from './page-anchor.component';
 import { StacheWindowRef } from '../shared';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
 
 describe('StachePageAnchorComponent', () => {
   let component: StachePageAnchorComponent;
   let fixture: ComponentFixture<StachePageAnchorComponent>;
   let debugElement: DebugElement;
+  let mockTableOfContentsServiceService: any;
 
   let testDebugElement: DebugElement;
   let testFixture: ComponentFixture<StachePageAnchorTestComponent>;
 
+  class MockTableOfContentsService {
+    public addPageAnchor = jasmine.createSpy('addPageAnchor');
+  }
+
   beforeEach(() => {
+    mockTableOfContentsServiceService = new MockTableOfContentsService();
+
     TestBed.configureTestingModule({
       declarations: [
         StachePageAnchorComponent,
@@ -29,7 +35,8 @@ describe('StachePageAnchorComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        StacheWindowRef
+        StacheWindowRef,
+        { provide: StacheTableOfContentsService, useValue: mockTableOfContentsServiceService }
       ]
     })
     .compileComponents();
@@ -42,7 +49,7 @@ describe('StachePageAnchorComponent', () => {
     testDebugElement = testFixture.debugElement;
   });
 
-  it('should display transcluded content', () => {
+  it('should display name', () => {
     testFixture.detectChanges();
     const heading = testDebugElement.nativeElement.querySelector('.stache-page-anchor-heading');
     expect(heading).toHaveText('Test Content');
@@ -75,14 +82,8 @@ describe('StachePageAnchorComponent', () => {
       });
   }));
 
-  it('should create a behavior subject and a navlink stream', () => {
-    expect(component['_subject'] instanceof BehaviorSubject).toEqual(true);
-    expect(component.navLinkStream instanceof Observable).toEqual(true);
-  });
-
   it('should broadcast changes', () => {
-    spyOn(component['_subject'], 'next').and.callThrough();
-    component.ngAfterViewInit();
-    expect(component['_subject'].next).toHaveBeenCalled();
+    testFixture.detectChanges();
+    expect(mockTableOfContentsServiceService.addPageAnchor).toHaveBeenCalled();
   });
 });

@@ -24,6 +24,7 @@ import {
 
 import { StacheLayoutModule } from '../layout';
 import { StachePageAnchorModule } from '../page-anchor';
+import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
 
 describe('StacheWrapperComponent', () => {
   let component: StacheWrapperComponent;
@@ -33,6 +34,7 @@ describe('StacheWrapperComponent', () => {
   let mockJsonDataService: any;
   let mockTitleService: any;
   let mockWindowService: any;
+  let mockTableOfContentsServiceService: any;
 
   class MockActivatedRoute {
     public fragment: Observable<string> = Observable.of('test-route');
@@ -65,6 +67,22 @@ describe('StacheWrapperComponent', () => {
 
   class MockTitleService {
     public setTitle = jasmine.createSpy('setTitle');
+  }
+
+  class MockTableOfContentsServiceService {
+    public navLinkStream = Observable.of(
+      {
+        path: 'First Path',
+        name: 'First Heading',
+        fragment: 'First Fragment'
+      },
+      {
+        path: 'Second Path',
+        name: 'Second Heading',
+        fragment: 'Second Fragment'
+      }
+    );
+    public addPageAnchor = function() {};
   }
 
   class MockWindowService {
@@ -119,6 +137,7 @@ describe('StacheWrapperComponent', () => {
     mockJsonDataService = new MockJsonDataService();
     mockTitleService = new MockTitleService();
     mockWindowService = new MockWindowService({});
+    mockTableOfContentsServiceService = new MockTableOfContentsServiceService();
 
     TestBed.configureTestingModule({
       imports: [
@@ -139,6 +158,7 @@ describe('StacheWrapperComponent', () => {
         { provide: StacheTitleService, useValue: mockTitleService },
         { provide: StacheWindowRef, useValue: mockWindowService },
         { provide: StacheConfigService, useValue: mockConfigService },
+        { provide: StacheTableOfContentsService, useValue: mockTableOfContentsServiceService},
         STACHE_ROUTE_METADATA_PROVIDERS
       ]
     })
@@ -297,9 +317,10 @@ describe('StacheWrapperComponent', () => {
     const testComponent = testFixture.componentInstance;
 
     testFixture.detectChanges();
-    expect(testComponent.testWrapper.pageAnchorSubscriptions.length).toEqual(2);
+    expect(testComponent.testWrapper.pageAnchorSubscription).not.toBe(undefined);
 
+    testComponent.testWrapper.ngOnInit();
     testComponent.testWrapper.ngOnDestroy();
-    expect(testComponent.testWrapper.pageAnchorSubscriptions.length).toEqual(0);
+    expect(testComponent.testWrapper.pageAnchorSubscription).toBe(undefined);
   });
 });
