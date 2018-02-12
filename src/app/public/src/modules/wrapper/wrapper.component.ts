@@ -5,7 +5,6 @@ import {
   OnDestroy,
   Input,
   AfterViewInit,
-  ContentChildren,
   ChangeDetectorRef
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { StacheTitleService } from './title.service';
-import { StachePageAnchorComponent } from '../page-anchor';
 import { StacheConfigService, StacheJsonDataService } from '../shared';
 import { StacheNavLink, StacheNavService } from '../nav';
 import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
@@ -58,8 +56,6 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
 
   public jsonData: any;
   public inPageRoutes: StacheNavLink[] = [];
-
-  @ContentChildren(StachePageAnchorComponent, { descendants: true })
   private pageAnchorSubscription: Subscription;
 
   public constructor(
@@ -88,6 +84,7 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private registerPageAnchors(): void {
     this.inPageRoutes = [];
+    this.destroyPageAnchorSubscription();
     this.pageAnchorSubscription = this.contentsService.navLinkStream.subscribe(
       link => {
         this.inPageRoutes.push(link);
@@ -114,7 +111,9 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private destroyPageAnchorSubscription(): void {
-    this.pageAnchorSubscription.unsubscribe();
-    this.pageAnchorSubscription = undefined;
+    if(this.pageAnchorSubscription) {
+      this.pageAnchorSubscription.unsubscribe();
+      this.pageAnchorSubscription = undefined;
+    }
   }
 }
