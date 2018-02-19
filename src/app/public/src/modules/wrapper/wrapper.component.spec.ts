@@ -74,7 +74,7 @@ describe('StacheWrapperComponent', () => {
       {
         path: 'Second Path',
         name: 'Second Heading',
-        fragment: 'Second Fragment',
+        fragment: 'Second Fragment'
       } as StacheNavLink,
       {
         path: 'First Path',

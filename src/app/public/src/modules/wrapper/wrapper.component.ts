@@ -87,10 +87,9 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
     this.destroyPageAnchorSubscription();
     this.pageAnchorSubscription = this.anchorService.anchorStream.subscribe(
       link => {
-        if (link.order != null) {
+        if (link.order != undefined) {
           this.inPageRoutes.splice(link.order, 0, link);
-        }
-        else {
+        } else {
           this.inPageRoutes.push(link);
         }
       }

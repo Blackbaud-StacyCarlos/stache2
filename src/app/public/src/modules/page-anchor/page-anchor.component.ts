@@ -31,7 +31,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
     private windowRef: StacheWindowRef,
     private cdRef: ChangeDetectorRef,
     private anchorService: StacheAnchorService) {
-      this.name = ""
+      this.name = '';
     }
 
   public ngOnInit(): void {
@@ -60,8 +60,8 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
 
   private setOrder(): void {
     let anchors = document.querySelectorAll('stache-page-anchor div');
-    for (var i = 0; i < anchors.length; i++) {
-      if (this.fragment == anchors[i].id) {
+    for (let i = 0; i < anchors.length; i++) {
+      if (this.fragment === anchors[i].id) {
         this.index = i;
       }
     }
