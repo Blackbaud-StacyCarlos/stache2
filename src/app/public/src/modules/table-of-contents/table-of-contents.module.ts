@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { StacheNavModule } from '../nav';
 import { StacheTableOfContentsComponent } from './table-of-contents.component';
-import { StacheTableOfContentsService } from './table-of-contents.service';
 
 @NgModule({
   declarations: [
@@ -16,8 +15,6 @@ import { StacheTableOfContentsService } from './table-of-contents.service';
   exports: [
     StacheTableOfContentsComponent
   ],
-  providers: [
-    StacheTableOfContentsService
-  ]
+  providers: []
 })
 export class StacheTableOfContentsModule { }

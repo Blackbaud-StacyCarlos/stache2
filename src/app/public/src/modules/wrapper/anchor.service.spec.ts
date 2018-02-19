@@ -1,7 +1,7 @@
-import { StacheTableOfContentsService } from './table-of-contents.service';
+import { StacheAnchorService } from './anchor.service';
 
 describe('StacheTableOfContentsService', () => {
-  let tocService: StacheTableOfContentsService;
+  let tocService: StacheAnchorService;
   let anchor: {
     path: 'Test Path'
     name: 'Test Name',
@@ -9,12 +9,12 @@ describe('StacheTableOfContentsService', () => {
   };
 
   beforeEach(() => {
-    tocService = new StacheTableOfContentsService();
+    tocService = new StacheAnchorService();
   });
 
   it('should add anchor to stream', () => {
     tocService.addPageAnchor(anchor);
-    let subscription = tocService.navLinkStream.subscribe(link =>
+    let subscription = tocService.anchorStream.subscribe(link =>
       expect(link.name).toBe(anchor.name)
     );
     subscription.unsubscribe();

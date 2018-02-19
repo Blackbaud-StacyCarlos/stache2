@@ -3,12 +3,12 @@ import { Subject } from 'rxjs';
 import { StacheNavLink } from '../nav';
 
 @Injectable()
-export class StacheTableOfContentsService {
+export class StacheAnchorService {
 
-    private navLink = new Subject<StacheNavLink>();
-    public navLinkStream = this.navLink.asObservable();
+    private anchor = new Subject<StacheNavLink>();
+    public anchorStream = this.anchor.asObservable();
 
     public addPageAnchor(anchor: StacheNavLink) {
-        this.navLink.next(anchor);
+        this.anchor.next(anchor);
     }
 }

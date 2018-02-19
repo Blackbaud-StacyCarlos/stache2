@@ -8,6 +8,7 @@ import { StacheLayoutModule } from '../layout';
 import { StacheAnalyticsModule } from '../analytics';
 
 import { StacheWrapperComponent } from './wrapper.component';
+import { StacheAnchorService } from './anchor.service';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { StacheWrapperComponent } from './wrapper.component';
     StacheWrapperComponent
   ],
   providers: [
-    StacheTitleService
+    StacheTitleService,
+    StacheAnchorService
   ]
 })
 export class StacheWrapperModule { }

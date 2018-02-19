@@ -8,23 +8,23 @@ import { StachePageAnchorTestComponent } from './fixtures/page-anchor.component.
 import { StachePageAnchorComponent } from './page-anchor.component';
 import { StacheWindowRef } from '../shared';
 
-import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
+import { StacheAnchorService } from '../wrapper/anchor.service';
 
 describe('StachePageAnchorComponent', () => {
   let component: StachePageAnchorComponent;
   let fixture: ComponentFixture<StachePageAnchorComponent>;
   let debugElement: DebugElement;
-  let mockTableOfContentsServiceService: any;
+  let mockAnchorService: any;
 
   let testDebugElement: DebugElement;
   let testFixture: ComponentFixture<StachePageAnchorTestComponent>;
 
-  class MockTableOfContentsService {
+  class MockAnchorService {
     public addPageAnchor = jasmine.createSpy('addPageAnchor');
   }
 
   beforeEach(() => {
-    mockTableOfContentsServiceService = new MockTableOfContentsService();
+    mockAnchorService = new MockAnchorService();
 
     TestBed.configureTestingModule({
       declarations: [
@@ -36,7 +36,7 @@ describe('StachePageAnchorComponent', () => {
       ],
       providers: [
         StacheWindowRef,
-        { provide: StacheTableOfContentsService, useValue: mockTableOfContentsServiceService }
+        { provide: StacheAnchorService, useValue: mockAnchorService }
       ]
     })
     .compileComponents();
@@ -84,6 +84,6 @@ describe('StachePageAnchorComponent', () => {
 
   it('should broadcast changes', () => {
     testFixture.detectChanges();
-    expect(mockTableOfContentsServiceService.addPageAnchor).toHaveBeenCalled();
+    expect(mockAnchorService.addPageAnchor).toHaveBeenCalled();
   });
 });

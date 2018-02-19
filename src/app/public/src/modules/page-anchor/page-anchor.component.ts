@@ -9,8 +9,8 @@ import {
 import { Router } from '@angular/router';
 
 import { StacheNavLink } from '../nav';
-import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
 import { StacheWindowRef } from '../shared';
+import { StacheAnchorService } from '../wrapper/anchor.service';
 
 @Component({
   selector: 'stache-page-anchor',
@@ -23,18 +23,20 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   public name: string;
   public fragment: string;
   public path: string[];
+  public index: number;
 
   public constructor(
     private router: Router,
     private elementRef: ElementRef,
     private windowRef: StacheWindowRef,
     private cdRef: ChangeDetectorRef,
-    private contentsService: StacheTableOfContentsService) {}
+    private anchorService: StacheAnchorService) {
+      this.name = ""
+    }
 
   public ngOnInit(): void {
     this.fragment = this.getFragment();
     this.path = [this.router.url.split('#')[0]];
-    this.registerAnchor();
   }
 
   public addHashToUrl(): void {
@@ -44,6 +46,8 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   }
 
   public ngAfterViewInit(): void {
+    this.setOrder();
+    this.registerAnchor();
     this.cdRef.detectChanges();
   }
 
@@ -54,11 +58,21 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
       .replace(/[^\w-]+/g, '');
   }
 
+  private setOrder(): void {
+    let anchors = document.querySelectorAll('stache-page-anchor div');
+    for (var i = 0; i < anchors.length; i++) {
+      if (this.fragment == anchors[i].id) {
+        this.index = i;
+      }
+    }
+  }
+
   private registerAnchor(): void {
-    this.contentsService.addPageAnchor({
+    this.anchorService.addPageAnchor({
       path: this.path,
       name: this.name,
-      fragment: this.fragment
+      fragment: this.fragment,
+      order: this.index
     } as StacheNavLink);
   }
 }

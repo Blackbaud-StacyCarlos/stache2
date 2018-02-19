@@ -11,7 +11,7 @@ import { StacheWrapperTestComponent } from './fixtures/wrapper.component.fixture
 import { StacheWrapperComponent } from './wrapper.component';
 import { StacheTitleService } from './title.service';
 
-import { StacheNavService } from '../nav';
+import { StacheNavService, StacheNavLink } from '../nav';
 
 import {
   StacheWindowRef,
@@ -24,7 +24,7 @@ import {
 
 import { StacheLayoutModule } from '../layout';
 import { StachePageAnchorModule } from '../page-anchor';
-import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
+import { StacheAnchorService } from './anchor.service';
 
 describe('StacheWrapperComponent', () => {
   let component: StacheWrapperComponent;
@@ -34,7 +34,7 @@ describe('StacheWrapperComponent', () => {
   let mockJsonDataService: any;
   let mockTitleService: any;
   let mockWindowService: any;
-  let mockTableOfContentsServiceService: any;
+  let mockAnchorService: any;
 
   class MockActivatedRoute {
     public fragment: Observable<string> = Observable.of('test-route');
@@ -69,18 +69,19 @@ describe('StacheWrapperComponent', () => {
     public setTitle = jasmine.createSpy('setTitle');
   }
 
-  class MockTableOfContentsServiceService {
-    public navLinkStream = Observable.of(
-      {
-        path: 'First Path',
-        name: 'First Heading',
-        fragment: 'First Fragment'
-      },
+  class MockAnchorService {
+    public anchorStream = Observable.of(
       {
         path: 'Second Path',
         name: 'Second Heading',
-        fragment: 'Second Fragment'
-      }
+        fragment: 'Second Fragment',
+      } as StacheNavLink,
+      {
+        path: 'First Path',
+        name: 'First Heading',
+        fragment: 'First Fragment',
+        order: 0
+      } as StacheNavLink
     );
     public addPageAnchor = function() {};
   }
@@ -137,7 +138,7 @@ describe('StacheWrapperComponent', () => {
     mockJsonDataService = new MockJsonDataService();
     mockTitleService = new MockTitleService();
     mockWindowService = new MockWindowService({});
-    mockTableOfContentsServiceService = new MockTableOfContentsServiceService();
+    mockAnchorService = new MockAnchorService();
 
     TestBed.configureTestingModule({
       imports: [
@@ -158,7 +159,7 @@ describe('StacheWrapperComponent', () => {
         { provide: StacheTitleService, useValue: mockTitleService },
         { provide: StacheWindowRef, useValue: mockWindowService },
         { provide: StacheConfigService, useValue: mockConfigService },
-        { provide: StacheTableOfContentsService, useValue: mockTableOfContentsServiceService},
+        { provide: StacheAnchorService, useValue: mockAnchorService},
         STACHE_ROUTE_METADATA_PROVIDERS
       ]
     })

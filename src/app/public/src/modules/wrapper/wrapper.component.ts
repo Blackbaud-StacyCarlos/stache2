@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 import { StacheTitleService } from './title.service';
 import { StacheConfigService, StacheJsonDataService } from '../shared';
 import { StacheNavLink, StacheNavService } from '../nav';
-import { StacheTableOfContentsService } from '../table-of-contents/table-of-contents.service';
+import { StacheAnchorService } from './anchor.service';
 
 const _get = require('lodash.get');
 
@@ -64,7 +64,7 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
     private titleService: StacheTitleService,
     private route: ActivatedRoute,
     private navService: StacheNavService,
-    private contentsService: StacheTableOfContentsService,
+    private anchorService: StacheAnchorService,
     private cdr: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
@@ -85,9 +85,14 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
   private registerPageAnchors(): void {
     this.inPageRoutes = [];
     this.destroyPageAnchorSubscription();
-    this.pageAnchorSubscription = this.contentsService.navLinkStream.subscribe(
+    this.pageAnchorSubscription = this.anchorService.anchorStream.subscribe(
       link => {
-        this.inPageRoutes.push(link);
+        if (link.order != null) {
+          this.inPageRoutes.splice(link.order, 0, link);
+        }
+        else {
+          this.inPageRoutes.push(link);
+        }
       }
     );
 
@@ -111,7 +116,7 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private destroyPageAnchorSubscription(): void {
-    if(this.pageAnchorSubscription) {
+    if (this.pageAnchorSubscription) {
       this.pageAnchorSubscription.unsubscribe();
       this.pageAnchorSubscription = undefined;
     }
