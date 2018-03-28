@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   OnInit,
-  Input,
   AfterViewInit
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,7 +18,6 @@ import { StacheAnchorService } from '../wrapper/anchor.service';
 })
 export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterViewInit {
 
-  @Input()
   public name: string;
   public fragment: string;
   public path: string[];
@@ -35,6 +33,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
     }
 
   public ngOnInit(): void {
+    this.name = this.getName();
     this.fragment = this.getFragment();
     this.path = [this.router.url.split('#')[0]];
   }
@@ -49,6 +48,10 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
     this.setOrder();
     this.registerAnchor();
     this.cdRef.detectChanges();
+  }
+
+  private getName(): string {
+    return this.elementRef.nativeElement.textContent.trim();
   }
 
   private getFragment(): string {

@@ -49,7 +49,7 @@ describe('StachePageAnchorComponent', () => {
     testDebugElement = testFixture.debugElement;
   });
 
-  it('should display name', () => {
+  it('should display transcluded content', () => {
     testFixture.detectChanges();
     const heading = testDebugElement.nativeElement.querySelector('.stache-page-anchor-heading');
     expect(heading).toHaveText('Test Content');

@@ -20,7 +20,7 @@
     Tutorial One: <a [routerLink]="['/demos', 'tutorial', 'tutorial-one']" [fragment]="'clone-the-repository'">Clone the repository</a>.
   </p>
 
-  <stache-page-anchor name="Markdown">Markdown</stache-page-anchor>
+  <stache-page-anchor>Markdown</stache-page-anchor>
 
   <stache-markdown>
   # This is a title
@@ -60,7 +60,7 @@
 
 </stache-markdown>
 
-  <stache-page-anchor name="Blockquote">Blockquote</stache-page-anchor>
+  <stache-page-anchor>Blockquote</stache-page-anchor>
 
   <p>
      Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, omnis expedita. Odit non est adipisci rem odio, inventore,
@@ -79,20 +79,20 @@
       ipsa cumque harum architecto hic dolor rerum? Praesentium, repellendus aut! Quidem, repudiandae.
     </p>
 
-  <stache-page-anchor name="JSON Data">JSON Data</stache-page-anchor>
+  <stache-page-anchor>JSON Data</stache-page-anchor>
 
   <p>
     The <stache-code>productNameLong</stache-code> set in <strong>global.json</strong> is: "{{ stache.jsonData.global.productNameLong }}".
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, omnis expedita. Odit non est adipisci rem odio, inventore, ipsa cumque harum architecto hic dolor rerum? Praesentium, repellendus aut! Quidem, repudiandae.
   </p>
 
-  <stache-page-anchor name="JSON Data binding: {{ stache.jsonData.global.productNameLong }}">JSON Data binding: {{ stache.jsonData.global.productNameLong }}</stache-page-anchor>
+  <stache-page-anchor>JSON Data binding: {{ stache.jsonData.global.productNameLong }}</stache-page-anchor>
 
   <p>
     You can also place JSON data within Page Anchors, which gets added to the Table of Contents.
   </p>
 
-  <stache-page-anchor name="Affix Top">Affix Top</stache-page-anchor>
+  <stache-page-anchor>Affix Top</stache-page-anchor>
 
   <stache-affix>
     <sky-alert>
@@ -100,31 +100,31 @@
     </sky-alert>
   </stache-affix>
 
-  <stache-page-anchor name="Action Buttons">Action Buttons</stache-page-anchor>
+  <stache-page-anchor>Action Buttons</stache-page-anchor>
 
   <stache-action-buttons [routes]="actionButtonRoutes">
   </stache-action-buttons>
 
-  <stache-page-anchor name="Code">Code</stache-page-anchor>
+  <stache-page-anchor>Code</stache-page-anchor>
 
   <p>
     To build this library, type <stache-code>npm run build</stache-code>.
   </p>
 
-  <stache-page-anchor name="Images">Images</stache-page-anchor>
+  <stache-page-anchor>Images</stache-page-anchor>
 
   <stache-image
     imageAlt="This is an image"
     imageSource="https://unsplash.it/200/300">
   </stache-image>
 
-  <stache-page-anchor name="Videos">Videos</stache-page-anchor>
+  <stache-page-anchor>Videos</stache-page-anchor>
 
   <stache-video
     videoSource="https://player.vimeo.com/video/121445495?title=0&portrait=0&byline=0">
   </stache-video>
 
-  <stache-page-anchor name="Include">Include</stache-page-anchor>
+  <stache-page-anchor>Include</stache-page-anchor>
 
   <stache-include
     fileName="example.html">
