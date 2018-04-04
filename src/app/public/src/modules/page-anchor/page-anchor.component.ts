@@ -45,11 +45,11 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   }
 
   public ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
     this.name = this.getName();
     this.fragment = this.getFragment();
     this.getIndex();
     this.registerAnchor();
+    this.cdRef.detectChanges();
   }
 
   private getName(): string {
