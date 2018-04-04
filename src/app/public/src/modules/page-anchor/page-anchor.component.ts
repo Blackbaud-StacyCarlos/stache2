@@ -45,9 +45,11 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   }
 
   public ngAfterViewInit(): void {
-    this.setOrder();
-    this.registerAnchor();
     this.cdRef.detectChanges();
+    this.name = this.getName();
+    this.fragment = this.getFragment();
+    this.getIndex();
+    this.registerAnchor();
   }
 
   private getName(): string {
@@ -61,11 +63,12 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
       .replace(/[^\w-]+/g, '');
   }
 
-  private setOrder(): void {
+  private getIndex(): void {
     let anchors = document.querySelectorAll('stache-page-anchor div');
     for (let i = 0; i < anchors.length; i++) {
       if (this.fragment === anchors[i].id) {
         this.index = i;
+        console.log(i);
       }
     }
   }
