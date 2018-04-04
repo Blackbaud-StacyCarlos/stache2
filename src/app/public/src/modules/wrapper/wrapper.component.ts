@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { StacheTitleService } from './title.service';
-import { StacheConfigService, StacheJsonDataService } from '../shared';
+import { StacheConfigService, StacheJsonDataService, StacheOmnibarAdapterService } from '../shared';
 import { StacheNavLink, StacheNavService } from '../nav';
 import { StacheAnchorService } from './anchor.service';
 
@@ -65,9 +65,11 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
     private route: ActivatedRoute,
     private navService: StacheNavService,
     private anchorService: StacheAnchorService,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private omnibarService: StacheOmnibarAdapterService) { }
 
   public ngOnInit(): void {
+    this.omnibarService.checkForOmnibar();
     this.titleService.setTitle(this.windowTitle || this.pageTitle);
     this.jsonData = this.dataService.getAll();
     this.registerPageAnchors();
@@ -94,7 +96,6 @@ export class StacheWrapperComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       }
     );
-
   }
 
   private checkEditButtonUrl(): boolean {
