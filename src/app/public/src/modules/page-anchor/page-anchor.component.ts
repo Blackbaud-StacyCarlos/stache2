@@ -68,7 +68,6 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
     for (let i = 0; i < anchors.length; i++) {
       if (this.fragment === anchors[i].id) {
         this.index = i;
-        console.log(i);
       }
     }
   }
