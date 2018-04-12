@@ -40,6 +40,9 @@ describe('StacheWrapperComponent', () => {
   class MockActivatedRoute {
     public fragment: Observable<string> = Observable.of('test-route');
     public url: Observable<string[]> = Observable.of(['test', 'routes']);
+    // snapshot is a required prop on activatedRoute to avoid an error with `'_lastPathIndex' of undefined`
+    // https://stackoverflow.com/questions/41245783/angular-testing-router-params-breaks-test-bed
+    public snapshot = {};
     public setFragment(fragString: any) {
       this.fragment = Observable.of(fragString);
     }
@@ -110,7 +113,10 @@ describe('StacheWrapperComponent', () => {
             scrollIntoView() { },
             offsetHeight: 50
           };
-        })
+        }),
+        querySelectorAll: jasmine.createSpy('querySelectorAll').and.callFake((selector: string): any[] => {
+            return [];
+         })
       },
       setTimeout: jasmine.createSpy('setTimeout').and.callFake(function(callback: any) {
         return callback();
@@ -218,11 +224,11 @@ describe('StacheWrapperComponent', () => {
     expect(component.showEditButton).toBe(true);
   });
 
-  // it('should have a showTableOfContents input', () => {
-  //   component.showTableOfContents = true;
-  //   fixture.detectChanges();
-  //   expect(component.showTableOfContents).toBe(true);
-  // });
+  it('should have a showTableOfContents input', () => {
+    component.showTableOfContents = true;
+    fixture.detectChanges();
+    expect(component.showTableOfContents).toBe(true);
+  });
 
   it('should have a showBackToTop input', () => {
     component.showBackToTop = false;
@@ -315,17 +321,17 @@ describe('StacheWrapperComponent', () => {
     expect(testComponent.testWrapper.pageAnchorSubscription).toBe(undefined);
   });
 
-  // it('should not navigate to a fragment if none exist', () => {
-  //   spyOn(mockActivatedRoute.fragment, 'subscribe').and.callFake((callback: any): any => {
-  //     callback();
-  //     return {
-  //       unsubscribe() { }
-  //     };
-  //   });
-  //   const testFixture = TestBed.createComponent(StacheWrapperTestComponent);
-  //   const testComponent = testFixture.componentInstance;
+  it('should not navigate to a fragment if none exist', () => {
+    spyOn(mockActivatedRoute.fragment, 'subscribe').and.callFake((callback: any): any => {
+      callback();
+      return {
+        unsubscribe() { }
+      };
+    });
+    const testFixture = TestBed.createComponent(StacheWrapperTestComponent);
+    const testComponent = testFixture.componentInstance;
 
-  //   testFixture.detectChanges();
-  //   expect(testComponent.testWrapper.pageAnchorSubscription.length).toEqual(undefined);
-  // });
+    testFixture.detectChanges();
+    expect(testComponent.testWrapper.pageAnchorSubscription.length).toEqual(undefined);
+  });
 });
