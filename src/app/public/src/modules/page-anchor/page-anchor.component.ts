@@ -21,7 +21,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   public name: string;
   public fragment: string;
   public path: string[];
-  public index: number;
+  public order: number;
 
   public constructor(
     private routerService: StacheRouteService,
@@ -45,7 +45,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
   public ngAfterViewInit(): void {
     this.name = this.getName();
     this.fragment = this.getFragment();
-    this.getIndex();
+    this.getOrder();
     this.registerAnchor();
     this.cdRef.detectChanges();
   }
@@ -61,11 +61,11 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
       .replace(/[^\w-]+/g, '');
   }
 
-  private getIndex(): void {
-    let anchors = document.querySelectorAll('stache-page-anchor div');
+  private getOrder(): void {
+    let anchors = this.windowRef.nativeWindow.document.querySelectorAll('stache-page-anchor div');
     for (let i = 0; i < anchors.length; i++) {
       if (this.fragment === anchors[i].id) {
-        this.index = i;
+        this.order = i;
       }
     }
   }
@@ -75,7 +75,7 @@ export class StachePageAnchorComponent implements OnInit, StacheNavLink, AfterVi
       path: this.path,
       name: this.name,
       fragment: this.fragment,
-      order: this.index
+      order: this.order
     } as StacheNavLink);
   }
 }
